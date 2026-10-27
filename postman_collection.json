@@ -1,0 +1,135 @@
+{
+  "info": {
+    "name": "Student Management API",
+    "description": "Collection for the Student Management System assignment. Base URL: http://localhost:5000",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5000" },
+    { "key": "student_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Create a Student",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/create", "host": ["{{base_url}}"], "path": ["create"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Ada Lovelace\",\n  \"email\": \"ada@example.com\",\n  \"age\": 22,\n  \"course\": \"Computer Science\",\n  \"department\": \"Engineering\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 201', () => pm.response.to.have.status(201));",
+              "const json = pm.response.json();",
+              "pm.test('Response has success true', () => pm.expect(json.success).to.be.true);",
+              "pm.collectionVariables.set('student_id', json.data.id);",
+              "console.log('Saved student_id:', json.data.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Get All Students",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/get-all", "host": ["{{base_url}}"], "path": ["get-all"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('Returns an array of students', () => pm.expect(json.data).to.be.an('array'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Get a Single Student",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/get-one/{{student_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["get-one", "{{student_id}}"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('Returns a student object', () => pm.expect(json.data).to.be.an('object'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Update a Student",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "{{base_url}}/update/{{student_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["update", "{{student_id}}"]
+        },
+        "body": { "mode": "raw", "raw": "{\n  \"course\": \"Data Science\"\n}" }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('Course updated', () => pm.expect(json.data.course).to.eql('Data Science'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Delete a Student",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{base_url}}/delete/{{student_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["delete", "{{student_id}}"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('Deletion confirmed', () => pm.expect(json.success).to.be.true);",
+              "pm.collectionVariables.set('student_id', '');"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}

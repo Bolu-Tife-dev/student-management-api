@@ -76,6 +76,10 @@ docker run -d --name mongo-students -p 27017:27017 mongo:7
 
 ## Testing with Postman
 
+Import `postman_collection.json` from this repo into Postman — it contains all five requests with tests, and it passes `student_id` between them automatically.
+
+Run the requests in order (Create → Get All → Get One → Update → Delete).
+
 ### 1. Create a student
 
 `POST http://localhost:5000/create`
