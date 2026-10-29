@@ -1,0 +1,20 @@
+services:
+  app:
+    build: .
+    ports:
+      - "2000:2000"
+    environment:
+      - PORT=2000
+      - MONGO_URI=mongodb://mongo:27017/student_management
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:8
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
