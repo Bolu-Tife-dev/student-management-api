@@ -41,7 +41,7 @@ Errors:
 ### Prerequisites
 
 - Node.js 18+
-- MongoDB running locally, a MongoDB Atlas cluster, or Docker
+- A free [MongoDB Atlas](https://www.mongodb.com/atlas) cluster (or any MongoDB instance)
 
 ### Installation
 
@@ -57,7 +57,13 @@ npm install
 cp .env.example .env
 ```
 
-Edit `.env` and set `MONGO_URI` (and `PORT` if you want something other than 5000).
+Edit `.env` and set `MONGO_URI` to your MongoDB Atlas connection string (find it in Atlas under **Database → Connect → Drivers**). Keep the database name `student_management` at the end of the connection string, or change it to whatever you like.
+
+Example:
+
+```
+MONGO_URI=mongodb+srv://myuser:mypassword@cluster0.abc12.mongodb.net/student_management?retryWrites=true&w=majority
+```
 
 ### Run
 
@@ -68,11 +74,7 @@ npm run dev      # auto-restart on file changes
 
 Server starts at `http://localhost:5000`.
 
-### Quick MongoDB with Docker
-
-```bash
-docker run -d --name mongo-students -p 27017:27017 mongo:7
-```
+> **Note:** If you're testing from Postman, make sure your Atlas IP access list allows your current IP (Atlas → **Network Access → Add IP Address**), or temporarily allow access from anywhere (`0.0.0.0/0`) while testing.
 
 ## Testing with Postman
 
